@@ -23,7 +23,7 @@ O resultado obtido é uma medida contínua, posteriormente classificada em oito 
 
 Para mais detalhes, acesse as [Notas Técnicas do Inse](https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/nivel-socioeconomico)
 
-::: callout
+::: {.callout-caution}
 De acordo com a nota técnica do índice produzida em 2023 pelo INEP, é importante destacar que, a rigor, o Inse *"... não é um índice de desigualdade, pois seu produto primário são os escores dos estudantes agrupados em determinados níveis de análise, e não uma distância entre pontuações de extremos (ou seja, uma medida de variabilidade ou dispersão) representada em um valor. Estudos nessa direção, no entanto, podem ser planejados e desenvolvidos, já que o delineamento metodológico do Inse do Saeb permite a comparação de resultados entre anos".*
 :::
 
@@ -137,7 +137,7 @@ O próximo passo consiste em obter os dados originais e salvá-los localmente. P
 #| output: false
 
 # Crie um objeto com o nome dos arquivos que deverão ser baixados
-arq_orig <- str_c("Inse_", ano, "_escolas.xlsx")
+arq_orig <- str_c("INSE_", ano, "_escolas.xlsx")
 
 # Baixe e salve os arquivos localmente
 if(!all(file.exists(pasta_dados_originais, arq_orig))) {

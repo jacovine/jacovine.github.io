@@ -9,7 +9,7 @@
 <meta name="author" content="CEM-USP (Thiago C. Jacovine, Thais Cshunderlick)">
 <meta name="dcterms.date" content="2026-03-26">
 
-<title>INSE</title>
+<title>Inse</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3916,7 +3916,7 @@ opacity: 0.55;
   <li><a href="#fonte-dos-dados" id="toc-fonte-dos-dados" class="nav-link" data-scroll-target="#fonte-dos-dados">Fonte dos Dados</a></li>
   <li><a href="#métodos" id="toc-métodos" class="nav-link" data-scroll-target="#métodos">Métodos</a>
   <ul class="collapse">
-  <li><a href="#dicionário-de-indicadores-que-serão-produzidos-inse" id="toc-dicionário-de-indicadores-que-serão-produzidos-inse" class="nav-link" data-scroll-target="#dicionário-de-indicadores-que-serão-produzidos-inse">Dicionário de indicadores que serão produzidos (INSE)</a></li>
+  <li><a href="#dicionário-de-indicadores-que-serão-produzidos-inse" id="toc-dicionário-de-indicadores-que-serão-produzidos-inse" class="nav-link" data-scroll-target="#dicionário-de-indicadores-que-serão-produzidos-inse">Dicionário de indicadores que serão produzidos (Inse)</a></li>
   </ul></li>
   <li><a href="#estruturação-do-ambiente-local" id="toc-estruturação-do-ambiente-local" class="nav-link" data-scroll-target="#estruturação-do-ambiente-local">Estruturação do ambiente local</a>
   <ul class="collapse">
@@ -3924,9 +3924,9 @@ opacity: 0.55;
   <li><a href="#definindo-algumas-variáveis-para-fins-de-reprodutibilidadeatualizações" id="toc-definindo-algumas-variáveis-para-fins-de-reprodutibilidadeatualizações" class="nav-link" data-scroll-target="#definindo-algumas-variáveis-para-fins-de-reprodutibilidadeatualizações">Definindo algumas variáveis para fins de reprodutibilidade/atualizações</a></li>
   <li><a href="#definindo-o-local-de-armazenamento-dos-dados" id="toc-definindo-o-local-de-armazenamento-dos-dados" class="nav-link" data-scroll-target="#definindo-o-local-de-armazenamento-dos-dados">Definindo o local de armazenamento dos dados</a></li>
   </ul></li>
-  <li><a href="#acesso-aos-dados-originais-do-inse" id="toc-acesso-aos-dados-originais-do-inse" class="nav-link" data-scroll-target="#acesso-aos-dados-originais-do-inse">Acesso aos dados originais do INSE</a>
+  <li><a href="#acesso-aos-dados-originais-do-inse" id="toc-acesso-aos-dados-originais-do-inse" class="nav-link" data-scroll-target="#acesso-aos-dados-originais-do-inse">Acesso aos dados originais do Inse</a>
   <ul class="collapse">
-  <li><a href="#baixando-o-arquivo-do-inse-formato-xlsx" id="toc-baixando-o-arquivo-do-inse-formato-xlsx" class="nav-link" data-scroll-target="#baixando-o-arquivo-do-inse-formato-xlsx">Baixando o arquivo do INSE (formato xlsx)</a></li>
+  <li><a href="#baixando-o-arquivo-do-inse-formato-xlsx" id="toc-baixando-o-arquivo-do-inse-formato-xlsx" class="nav-link" data-scroll-target="#baixando-o-arquivo-do-inse-formato-xlsx">Baixando o arquivo do Inse (formato xlsx)</a></li>
   </ul></li>
   <li><a href="#importação-e-organização-dos-dados" id="toc-importação-e-organização-dos-dados" class="nav-link" data-scroll-target="#importação-e-organização-dos-dados">Importação e organização dos dados</a>
   <ul class="collapse">
@@ -3943,7 +3943,7 @@ opacity: 0.55;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">INSE</h1>
+<h1 class="title">Inse</h1>
 <p class="subtitle lead">Indicador de Nível Socioeconômico</p>
 </div>
 
@@ -3976,18 +3976,21 @@ opacity: 0.55;
 <section id="visão-geral" class="level2">
 <h2 class="anchored" data-anchor-id="visão-geral">Visão Geral</h2>
 <p>O presente documento apresenta uma proposta para a obtenção, o tratamento e a disponibilização dos dados do <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/nivel-socioeconomico"><strong>Indicador de Nível Socioeconômico (Inse)</strong></a>.</p>
-<p>Criado pelo <a href="https://www.gov.br/inep/pt-br">Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep)</a>, o INSE é uma medida sintética construída a partir dos questionários do <strong>Saeb</strong> e tem como objetivo “traçar um panorama da realidade social de escolas e redes de ensino a partir do perfil dos alunos, além de produzir evidências para auxiliar na implementação, no monitoramento e na avaliação de políticas públicas voltadas à educação” (<a href="https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/saeb/indicador-de-nivel-socioeconomico-do-saeb-disponivel">INEP</a>)</p>
-<p>Para o seu cômputo, o índice considera <strong>a escolaridade dos responsáveis</strong> e <strong>a posse de bens e o acesso a serviços no domicílio dos estudantes</strong> e é estimado por meio de modelagem estatística baseada na Teoria de Resposta ao Item (TRI).</p>
-<p>O resultado obtido é uma medida contínua, posteriormente classificada em oito níveis. Ressalte-se, também, que os dados podem ser obtidos por escolas, municípios, estados e federação. Por fim, merece ser mencionado que o Inse, assim como o Ideb, é produzido <strong>bienalmente</strong>, acompanhando o ciclo de aplicação do Saeb.</p>
+<p>Criado pelo <a href="https://www.gov.br/inep/pt-br">Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep)</a>, o Inse é uma medida sintética construída a partir dos questionários do <strong>Saeb</strong> e tem como objetivo “traçar um panorama da realidade social de escolas e redes de ensino a partir do perfil dos alunos, além de produzir evidências para auxiliar na implementação, no monitoramento e na avaliação de políticas públicas voltadas à educação” (<a href="https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/saeb/indicador-de-nivel-socioeconomico-do-saeb-disponivel">INEP</a>)</p>
+<p>Para o seu cômputo, o índice considera <strong>a escolaridade dos responsáveis</strong>, bem como <strong>a posse de bens</strong> e <strong>o acesso a serviços no domicílio dos estudantes</strong>. A partir desses fatores, as estimativas do Inse são produzidas por meio de modelagem estatística baseada na Teoria de Resposta ao Item (TRI).</p>
+<p>O resultado obtido é uma medida contínua, posteriormente classificada em oito níveis (I a VIII). Ressalte-se, também, que os dados podem ser obtidos por escolas, municípios, estados e federação. Por fim, merece ser mencionado que o Inse, assim como o Ideb, é produzido <strong>bienalmente</strong>, acompanhando o ciclo de aplicação do Saeb.</p>
 <p>Para mais detalhes, acesse as <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/nivel-socioeconomico">Notas Técnicas do Inse</a></p>
-<div class="callout callout-style-simple callout-none no-icon">
-<div class="callout-body d-flex">
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
+<i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>De acordo com a nota técnica do INEP para o ano de 2023, é importante destacar que, a rigor, o Inse “…não é um índice dedesigualdade, pois seu produto primário são os escores dos estudantes agrupados em determinados níveis de análise, e não uma distância entre pontuações de extremos (ou seja, uma medida de variabilidade ou dispersão) representada em um valor. Estudos nessa direção, no entanto, podem ser planejados e desenvolvidos, já que o delineamento metodológico do Inse do Saeb permite a comparação de resultados entre anos.”</p>
+<div class="callout-title-container flex-fill">
+Caution
 </div>
+</div>
+<div class="callout-body-container callout-body">
+<p>De acordo com a nota técnica do índice produzida em 2023 pelo INEP, é importante destacar que, a rigor, o Inse <em>“… não é um índice de desigualdade, pois seu produto primário são os escores dos estudantes agrupados em determinados níveis de análise, e não uma distância entre pontuações de extremos (ou seja, uma medida de variabilidade ou dispersão) representada em um valor. Estudos nessa direção, no entanto, podem ser planejados e desenvolvidos, já que o delineamento metodológico do Inse do Saeb permite a comparação de resultados entre anos”.</em></p>
 </div>
 </div>
 </section>
@@ -4001,11 +4004,11 @@ opacity: 0.55;
 <section id="métodos" class="level2">
 <h2 class="anchored" data-anchor-id="métodos">Métodos</h2>
 <section id="dicionário-de-indicadores-que-serão-produzidos-inse" class="level3">
-<h3 class="anchored" data-anchor-id="dicionário-de-indicadores-que-serão-produzidos-inse">Dicionário de indicadores que serão produzidos (INSE)</h3>
+<h3 class="anchored" data-anchor-id="dicionário-de-indicadores-que-serão-produzidos-inse">Dicionário de indicadores que serão produzidos (Inse)</h3>
 <div id="tbl-dic-inse" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dic-inse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table 1: Dicionário de indicadores calculados para o INSE
+Table 1: Dicionário de indicadores calculados para o Inse
 </figcaption>
 <div aria-describedby="tbl-dic-inse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -4027,20 +4030,20 @@ Table 1: Dicionário de indicadores calculados para o INSE
 <tr class="odd">
 <td>in23_edu01_inse_med_0</td>
 <td style="text-align: center;"><code>media_inse</code></td>
-<td>O indicador mostra a média contínua do Indicador de Nível Socioeconômico (INSE) da escola.</td>
-<td><em>No município de Recife (PE), a escola de código 26000123 apresenta um INSE médio de 5,12.</em></td>
+<td>O indicador mostra a média contínua do Indicador de Nível Socioeconômico (Inse) da escola.</td>
+<td><em>No município de Recife (PE), a escola de código 26000123 apresenta um Inse médio de 5,12.</em></td>
 </tr>
 <tr class="even">
 <td>in23_edu01_inse_qtd_0</td>
 <td style="text-align: center;"><code>qtd_alunos_inse</code></td>
-<td>O indicador mostra o número absoluto de alunos da escola que tiveram seus dados contabilizados para o cálculo do INSE.</td>
-<td><em>No município de Porto Alegre (RS), a escola de código 43000123 possui 142 alunos considerados no cálculo do INSE.</em></td>
+<td>O indicador mostra o número absoluto de alunos da escola que tiveram seus dados contabilizados para o cálculo do Inse.</td>
+<td><em>No município de Porto Alegre (RS), a escola de código 43000123 possui 142 alunos considerados no cálculo do Inse.</em></td>
 </tr>
 <tr class="odd">
 <td>in23_edu01_inse_nivel_0</td>
 <td style="text-align: center;"><code>inse_classificacao</code></td>
-<td>O indicador mostra a classificação categórica do Indicador de Nível Socioeconômico (INSE) da escola em níveis predefinidos (ex: Nível I, Nível II, etc.).</td>
-<td><em>No município de Belém (PA), a escola de código 15000123 está classificada no Nível IV do INSE.</em></td>
+<td>O indicador mostra a classificação categórica do Indicador de Nível Socioeconômico (Inse) da escola em níveis predefinidos (ex: Nível I, Nível II, etc.).</td>
+<td><em>No município de Belém (PA), a escola de código 15000123 está classificada no Nível IV do Inse.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4051,7 +4054,7 @@ Table 1: Dicionário de indicadores calculados para o INSE
 </section>
 <section id="estruturação-do-ambiente-local" class="level2">
 <h2 class="anchored" data-anchor-id="estruturação-do-ambiente-local">Estruturação do ambiente local</h2>
-<p>O primeiro passo para a geração dos indicadores de interesse do Inse consiste na preparação e estruturação do R e do ambiente onde os dados serão armazenados. Dessa forma, garante-se que o procedimento possa ser reproduzido por qualquer pessoa em qualquer local, obtendo-se os mesmos resultados.</p>
+<p>O primeiro passo para a geração dos indicadores de interesse do Inse consiste na preparação e estruturação do R e do ambiente onde os dados serão armazenados. Dessa forma, o procedimento poderá ser reproduzido por qualquer pessoa em qualquer local, obtendo-se os mesmos resultados.</p>
 <section id="carregando-os-pacotes-necessários" class="level3">
 <h3 class="anchored" data-anchor-id="carregando-os-pacotes-necessários">Carregando os pacotes necessários</h3>
 <p>De modo a facilitar algumas operações, e tomando como guia os princípios FAIR e do Tidyverse, alguns pacotes serão habilitados (e, se necessário, baixados). Graças a eles, um grupo novo de funções poderá ser utilizado para a manipulação dos dados.</p>
@@ -4119,10 +4122,10 @@ Table 1: Dicionário de indicadores calculados para o INSE
 </section>
 </section>
 <section id="acesso-aos-dados-originais-do-inse" class="level2">
-<h2 class="anchored" data-anchor-id="acesso-aos-dados-originais-do-inse">Acesso aos dados originais do INSE</h2>
+<h2 class="anchored" data-anchor-id="acesso-aos-dados-originais-do-inse">Acesso aos dados originais do Inse</h2>
 <p>Com o ambiente local estruturado, o primeiro passo consiste em obter os dados publicamente disponibilizados pelo INEP e salvá-los localmente.</p>
 <section id="baixando-o-arquivo-do-inse-formato-xlsx" class="level3">
-<h3 class="anchored" data-anchor-id="baixando-o-arquivo-do-inse-formato-xlsx">Baixando o arquivo do INSE (formato xlsx)</h3>
+<h3 class="anchored" data-anchor-id="baixando-o-arquivo-do-inse-formato-xlsx">Baixando o arquivo do Inse (formato xlsx)</h3>
 <p>Para que os dados possam ser obtidos (baixados), defini-se, inicialmente, o endereço eletrônico (url) onde os arquivos estão hospedados.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Defina a url onde os arquivos estão hospedados</span></span>

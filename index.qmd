@@ -1,0 +1,278 @@
+---
+title: "INSE"
+subtitle: "Indicador de Nível Socioeconômico"
+author: "CEM-USP (Thiago C. Jacovine, Thais Cshunderlick)"
+date: today
+format:
+  html:
+    toc: true
+    toc-title: "Nesta página"
+    toc-depth: 3
+    css: styles.css
+---
+
+## Visão Geral
+
+O presente documento apresenta uma proposta para a obtenção, o tratamento e a disponibilização dos dados do [**Indicador de Nível Socioeconômico (Inse)**](https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/nivel-socioeconomico).
+
+Criado pelo [Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep)](https://www.gov.br/inep/pt-br), o INSE é uma medida sintética construída a partir dos questionários do **Saeb** e tem como objetivo "traçar um panorama da realidade social de escolas e redes de ensino a partir do perfil dos alunos, além de produzir evidências para auxiliar na implementação, no monitoramento e na avaliação de políticas públicas voltadas à educação" ([INEP](https://www.gov.br/inep/pt-br/centrais-de-conteudo/noticias/saeb/indicador-de-nivel-socioeconomico-do-saeb-disponivel))
+
+Para o seu cômputo, o índice considera **a escolaridade dos responsáveis** e **a posse de bens e o acesso a serviços no domicílio dos estudantes** e é estimado por meio de modelagem estatística baseada na Teoria de Resposta ao Item (TRI).
+
+O resultado obtido é uma medida contínua, posteriormente classificada em oito níveis. Ressalte-se, também, que os dados podem ser obtidos por escolas, municípios, estados e federação. Por fim, merece ser mencionado que o Inse, assim como o Ideb, é produzido **bienalmente**, acompanhando o ciclo de aplicação do Saeb.
+
+Para mais detalhes, acesse as [Notas Técnicas do Inse](https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/nivel-socioeconomico)
+
+::: callout
+De acordo com a nota técnica do INEP para o ano de 2023, é importante destacar que, a rigor, o Inse "...não é um índice dedesigualdade, pois seu produto primário são os escores dos estudantes agrupados em determinados níveis de análise, e não uma distância entre pontuações de extremos (ou seja, uma medida de variabilidade ou dispersão) representada em um valor. Estudos nessa direção, no entanto, podem ser planejados e desenvolvidos, já que o delineamento metodológico do Inse do Saeb permite a comparação de resultados entre anos."
+:::
+
+## Fonte dos Dados
+
+Os dados utilizados são provenientes do:
+
+-   [Sistema de Avaliação da Educação Básica (Saeb)](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/saeb): realizado a cada dois anos na rede pública e em uma amostra da rede privada, o SAEB é um conjunto de avaliações externas que busca captar os níveis de aprendizagem dos estudantes avaliados. Dessa forma, ele oferece um indicativo da qualidade do ensino brasileiro, gerando subsídios para a elaboração, o monitoramento e o aprimoramento de políticas educacionais com base em evidências.
+
+## Métodos
+
+### Dicionário de indicadores que serão produzidos (INSE)
+
+| Indicador | Cálculo | Descrição | Como ler |
+|------------------|:----------------:|------------------|------------------|
+| in23_edu01_inse_med_0 | `media_inse` | O indicador mostra a média contínua do Indicador de Nível Socioeconômico (INSE) da escola. | *No município de Recife (PE), a escola de código 26000123 apresenta um INSE médio de 5,12.* |
+| in23_edu01_inse_qtd_0 | `qtd_alunos_inse` | O indicador mostra o número absoluto de alunos da escola que tiveram seus dados contabilizados para o cálculo do INSE. | *No município de Porto Alegre (RS), a escola de código 43000123 possui 142 alunos considerados no cálculo do INSE.* |
+| in23_edu01_inse_nivel_0 | `inse_classificacao` | O indicador mostra a classificação categórica do Indicador de Nível Socioeconômico (INSE) da escola em níveis predefinidos (ex: Nível I, Nível II, etc.). | *No município de Belém (PA), a escola de código 15000123 está classificada no Nível IV do INSE.* |
+: Dicionário de indicadores calculados para o INSE {#tbl-dic-inse}
+
+
+## Estruturação do ambiente local
+
+O primeiro passo para a geração dos indicadores de interesse do Inse consiste na preparação e estruturação do R e do ambiente onde os dados serão armazenados. Dessa forma, o procedimento poderá ser reproduzido por qualquer pessoa em qualquer local, obtendo-se os mesmos resultados.
+
+### Carregando os pacotes necessários
+
+De modo a facilitar algumas operações, e tomando como guia os princípios FAIR e do Tidyverse, alguns pacotes serão habilitados (e, se necessário, baixados). Graças a eles, um grupo novo de funções poderá ser utilizado para a manipulação dos dados.
+
+```{r}
+#| label: habilitando_pacotes
+#| warning: false
+#| output: false
+
+# Defina quais serão os pacotes utilizados
+pckgs <- c("archive", "arrow", "fs", "geocodebr", "httr2", "here", "janitor", "readxl", "sf", "tidyverse")
+
+# Cheque e instale os pacotes que ainda não estão disponíveis em seu ambiente local
+for (pckg in pckgs) {
+  if(pckg %in% rownames(installed.packages()) == FALSE) {
+    install.packages(pckg)}}
+
+# Carregue os pacotes
+lapply(pckgs, library, character.only = TRUE)
+```
+
+### Definindo algumas variáveis para fins de reprodutibilidade/atualizações
+
+Para facilitar possíveis alterações, atualizações e novas consultas, algumas variáveis já serão definidas neste momento. Elas se referem ao ano do levantamento da pesquisa ("ano"), ao prefixo que será utilizado para a nomenclatura dos indicadores da plataforma ("prefixo_ano") e a uma "chave" para garantir que os mesmos dados aleatórios gerados aqui possam ser obtidos localmente.
+
+::: {.callout-tip appearance="simple"}
+## O script funciona para os anos de **2019**, **2021** e **2023**.
+:::
+
+```{r}
+# Defina o ano da consulta
+ano <- 2023
+
+# Estabeleça o prefixo do indicador
+# prefixo_ano <- paste0("in", substr(ano, 3, 4))
+prefixo_ano <- str_c("in", str_sub(ano, start = 3, end = 4))
+
+# Defina uma chave para que os resultados gerados aleatoriamente possam ser replicados
+set.seed(123456789)
+```
+
+### Definindo o local de armazenamento dos dados
+
+Para a geração e a atualização dos indicadores, é importante definir um lugar específico em seu ambiente local (computador, por ex.) para armazenar os dados brutos e processados. Sendo assim, três pastas serão criadas a seguir: uma destinada aos dados originais, outra para os dados processados e a terceira para o registro das alterações/atualizaçãoes realizadas ao longo do tempo.
+
+```{r}
+#| label: def_amb_local
+
+# Defina o local onde os dados brutos e os processados serão armazenados
+pastas <- c(# Pasta para registrar os logs
+            here("dados", "inse", str_c(ano, "_logs")),
+            # Pasta para os dados brutos
+            here("dados", "inse", str_c(ano, "_originais")),
+            # Pasta para os dados processados
+            here("dados", "inse", str_c(ano, "_processados")))
+
+# Crie as pastas para os dados
+for (pasta in pastas) {
+  if (!dir_exists(pasta)) dir_create(pasta, recurse = TRUE)}
+
+# Criação da pasta para salvar os arquivos com os indicadores
+pasta_dados_originais <- pastas[2]
+pasta_dados_processados <- pastas[3]
+```
+
+## Acesso aos dados originais do INSE
+
+Com o ambiente local estruturado, o primeiro passo consiste em obter os dados publicamente disponibilizados pelo INEP e salvá-los localmente.
+
+### Baixando o arquivo do INSE (formato xlsx)
+
+Para que os dados possam ser obtidos (baixados), defini-se, inicialmente, o endereço eletrônico (url) onde os arquivos estão hospedados.
+
+```{r}
+#| label: url_dados_originais
+#| output: false
+
+# Defina a url onde os arquivos estão hospedados
+base_url <- "https://download.inep.gov.br"
+```
+
+O próximo passo consiste em obter os dados originais e salvá-los localmente. Para isso, cria-se um objeto onde o nome do arquivo a ser baixado ("arq_orig") é armazenado. Em seguida, realiza-se o download dos dados originais.
+
+```{r}
+#| label: download_dados_originais
+#| output: false
+
+# Crie um objeto com o nome dos arquivos que deverão ser baixados
+arq_orig <- str_c("INSE_", ano, "_escolas.xlsx")
+
+# Baixe e salve os arquivos localmente
+if(!all(file.exists(pasta_dados_originais, arq_orig))) {
+  request(base_url) |>
+    req_url_path_append("informacoes_estatisticas") |>
+    req_url_path_append("indicadores_educacionais") |>
+    req_url_path_append(ano) |>
+    req_url_path_append("nivel_socioeconomico") |>
+    req_url_path_append(arq_orig) |>
+    req_perform(
+      path = file.path(pasta_dados_originais, arq_orig))}
+```
+
+## Importação e organização dos dados
+
+Com os arquivos originais no ambiente local, o próximo passo diz respeito à importação e organização dos dados.
+
+### Importando os dados originais para o R
+
+De forma similar ao realizado para a obtenção dos dados originais, inicialmente lista-se o caminho (local) onde o arquivo está armazenado.
+
+```{r}
+#| label: caminho_dado_inse
+
+# Liste as planilhas que contêm os dados de interesse (arquivos .xlsx)
+inse_base <- dir_ls(
+  path = pasta_dados_originais,
+  recurse = TRUE,
+  glob = "*escolas.xlsx")
+```
+
+A seguir, os dados são lidos e armazenados em um objeto ("inse_orig") na atual sessão do R.
+
+```{r}
+#| label: leia_dado_inse
+#| warning: false
+
+# Crie um objeto com os dados do Inse
+inse_orig <- read_excel(
+          inse_base,
+          sheet = 1,
+          col_types = "text") |>
+          clean_names()
+```
+
+### Selecionando as variáveis de interesse (colunas)
+
+Dado que nem todo o conjunto de variáveis do [Inse](https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/indicadores-educacionais/nivel-socioeconomico) é necessário para a produção dos indicadores disponibilizados na plataforma Georedus, a seguir as variáveis de interesse serão selecionadas.
+
+```{r}
+#| label: sel_var_inse
+#| warning: false
+
+# Selecione apenas as variáveis de interesse do Inse
+inse <- inse_orig |>
+  select(nu_ano_saeb, id_escola, qtd_alunos_inse, media_inse, inse_classificacao)
+```
+
+### Padronizando e reclassificando as variáveis (colunas) selecionadas
+
+Para padronizar a representação e a exibição dos dados, a seguir algumas operações serão realizadas. Atreladas aos valores da base, a patir delas, i) as escolas que não possuem um código de identificação ("id_escola") são excluídas, ii) os valores faltantes (missing values) são gravados como "NA" e iii) a classe e eventuas símbolos dos indicadores que serão computados são reclassificados.
+
+```{r}
+#| label: padronize_var_inse
+#| warning: false
+
+# Padronize os valores da base do Inse
+inse <- inse |>
+  filter(!is.na(id_escola)) |>
+  mutate(
+    # Indicador quantidade de alunos
+    qtd_alunos_inse = qtd_alunos_inse |>
+      na_if("--") |>
+      gsub("\\.", "", x = _) |> 
+      as.integer(),
+
+    # Indicador sobre o valor médio do Inse
+    media_inse = media_inse |>
+      na_if("--") |>
+      gsub(",", ".", x = _) |>
+      as.numeric() |>
+      round(2),
+    
+    # Indicador sobre as classes do Inse
+     inse_classificacao = inse_classificacao |>
+      na_if("--") |>
+      gsub("Nível ", "", x = _) |>
+      factor(
+        levels = c("I","II","III","IV","V","VI","VII","VIII"),
+        ordered = TRUE))
+```
+
+### Renomeando as variáveis (colunas) selecionadas
+
+Para adotar o padrão de nomenclatura utilizado na Georedus, o código da escola e os indicadores do Inse serão renomeados.
+
+Exemplo: `in23_edu01_inse_med_0`
+
+|  |  |  |
+|-------------------|----------------------------------|-------------------|
+| **Origem do dado** | INEP | `in` |
+| **Ano** | 2023 | `23` |
+| **Tema** | Educação | `edu` |
+| **Subtema** | Indicadores Educacionais | `01` |
+| **Indicador** | Indicador de Nível Socioeconômico | `inse` |
+| **Média Inse** | Valor médio do indicador | `med` |
+| **Tipo do dado** | Bruto, valores originais das variáveis, tal qual disponibilizado pela instituição produtora/responsável pelo dado - no caso, o INEP | `0` |
+|  | Processado (absoluto), valores totais gerados por meio de algum tipo de transformação/manipulação gerada a partir do dado de origem (soma, subtração, etc.) | `1` |
+|  | Processado (proporção - %), valores relativos gerados a partir da divisão de uma variável por outra | `2` |
+
+```{r}
+#| label: renomeie_var_inse
+
+# Renomeie as variáveis do Inse 
+inse <- inse |>
+    rename(
+        cod_escola = id_escola,
+        ano_saeb = nu_ano_saeb,
+        in23_edu01_inse_med_0 = "media_inse",
+        in23_edu01_inse_qtd_0 = "qtd_alunos_inse",
+        in23_edu01_inse_nivel_0 = "inse_classificacao")
+```
+
+Veja o resultado de 10 escolas escolhidas aleatoriamente, por nível de ensino.
+
+```{r}
+#| label: exemplo_visual_inse
+
+# Visualise uma amostra do Inse para 10 escolas 
+slice_sample(inse, n = 10) |> 
+  select(!ano_saeb) |> 
+  knitr::kable(
+    digits = 3,
+    col.names = c("Escola (ID)", "No. de matrículas", "Valor médio (Inse)", "Classe (Inse)"), 
+    caption = str_c("Indicadores do Inse, por escola, para o ano de ", ano), 
+    align = "c", 
+    format.args = list(decimal.mark = ","))
+```
